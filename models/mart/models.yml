@@ -1,0 +1,45 @@
+version: 2
+
+models:
+
+  - name: f_spotify_tracks_with_albums
+    description: >
+      User's favorite Spotify tracks with the album name
+    columns:
+      - name: album_name
+        tests:
+          - not_null
+      - name: track_name
+        tests:
+          - not_null
+          # - unique # if we assume two tracks don't have the same title
+
+  - name: f_spotify_tracks_with_albums_artists_and_album_art
+    description: >
+      User's favorite Spotify tracks with the album name, artists, and album art.
+      Be careful, records are duplicated for each artist.
+    columns:
+      - name: album_name
+        tests:
+          - not_null
+      - name: track_name
+        tests:
+          - not_null
+          # - unique # will fail because records are duplicated for each artist
+      - name: artist_name
+        tests:
+          - not_null
+
+  - name: f_top_artists_based_on_liked_songs
+    description: >
+      User's top artists based on liked songs
+    columns:
+      - name: artist_name
+        tests:
+          - not_null
+          - unique
+      - name: featured_on_track_count
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: false

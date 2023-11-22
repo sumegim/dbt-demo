@@ -1,0 +1,55 @@
+version: 2
+sources:
+  - name: spotify
+    schema: dev_mark
+    tables:
+
+      - name: My_top_Tracks
+        description: User's favorite Spotify tracks
+        columns:
+          - name: id
+            description: The unique identifier for a track
+            tests:
+              - unique
+              - not_null
+
+      - name: My_top_Tracks_album
+        description: Detailed information about the album of a given track
+        columns:
+          - name: _airbyte_My_top_Tracks_hashid
+            description: Foreign key to My_top_Tracks
+            tests:
+              - unique
+              - not_null
+          - name: id
+            description: The unique identifier for an album
+            tests:
+              # - unique # might fail because I can listen to multiple songs from the same album
+              - not_null
+
+      - name: My_top_Tracks_artists
+        description: Detailed information about the artists of a given track
+        columns:
+          - name: _airbyte_My_top_Tracks_hashid
+            description: Foreign key to My_top_Tracks
+            tests:
+              # - unique # might fail because multiple artists can be associated with a song
+              - not_null
+          - name: id
+            description: The unique identifier for an artist
+            tests:
+              # - unique # might fail because I can listen to multiple songs from the same artist
+              - not_null
+
+      - name: My_top_Tracks_album_images
+        description: Album art for a given album. (Multiple resolutions available.)
+        columns:
+          - name: _airbyte_album_hashid
+            description: Foreign key to an album
+            tests:
+              # - unique # will fail, because multiple images are available for each album
+              - not_null
+          - name: url
+            description: The source URL of the image
+            tests:
+              - not_null

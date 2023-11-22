@@ -1,0 +1,13 @@
+dbt-bq:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: service-account
+      project: mo-trx-data-dev-sbe9
+      dataset: dev_mark
+      threads: 4
+      keyfile: "{{ env_var('HOME') }}/.dbt/mo-trx-data-dev-sa-key.json"
+      timeout_seconds: 300
+      priority: interactive
+      retries: 1
